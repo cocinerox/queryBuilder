@@ -93,6 +93,9 @@ HTMLWidgets.widget({
               i.values.forEach(function(x) { selectizeOptions.push({ id: x })});
               myFilter.plugin_config = { "valueField" : "id", "labelField" : "id", "maxItems" : null, "create" : false, "options" : selectizeOptions };
               myFilter.valueGetter = function(rule) { return rule.$el.find('.selectized').selectize()[0].selectize.items; };
+              myFilter.valueSetter = function (rule, value) {
+                rule.$el.find('.rule-value-container input')[0].selectize.setValue(value);
+              };
             }
          }
         } else if (i.type == 'date') {
