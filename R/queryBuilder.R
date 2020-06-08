@@ -49,6 +49,8 @@ queryBuilder <- function(data = NULL,
                                                input = 'selectize')
       } else if (c == 'Date') {
         filters[[length(filters) + 1]] <- list(name = names(c), type = 'date')
+      } else if (c == 'POSIXct') {
+        filters[[length(filters) + 1]] <- list(name = names(c), type = 'datetime')
       } else if (c == 'logical') {
         filters[[length(filters) + 1]] <- list(name = names(c),
                                                type = 'boolean',
@@ -213,6 +215,14 @@ recurseFilter <- function(filter = NULL) {
     } else {  # not a nested filter group - process as a single filter
       if (length(filter$rules[[i]]$value) == 0) {  # value is list() when checking for NA
         value <- 0
+        
+      } else if (filter$rules[[i]]$type == 'datetime') {  # treat dates
+        if (length(filter$rules[[i]]$value) > 1) {
+          value <- lapply(filter$rules[[i]]$value, function(x) paste0('as.POSIXct(\"', x, tz = "GMT" '\")'))  # date-time range
+        } else {
+          value <- paste0('as.POSIXct(\"', filter$rules[[i]]$value, tz = "GMT" '\")')  # single date-time
+        }
+        
       } else if (filter$rules[[i]]$type == 'date') {  # treat dates
         if (length(filter$rules[[i]]$value) > 1) {
           value <- lapply(filter$rules[[i]]$value, function(x) paste0('as.Date(\"', x, '\")'))  # date range
