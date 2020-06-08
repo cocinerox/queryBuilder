@@ -218,9 +218,9 @@ recurseFilter <- function(filter = NULL) {
         
       } else if (filter$rules[[i]]$type == 'datetime') {  # treat dates
         if (length(filter$rules[[i]]$value) > 1) {
-          value <- lapply(filter$rules[[i]]$value, function(x) paste0('as.POSIXct(\"', x, tz = "GMT" '\")'))  # date-time range
+          value <- lapply(filter$rules[[i]]$value, function(x) paste0('as.POSIXct(\"', x, tz = "GMT", '\")'))  # date-time range
         } else {
-          value <- paste0('as.POSIXct(\"', filter$rules[[i]]$value, tz = "GMT" '\")')  # single date-time
+          value <- paste0('as.POSIXct(\"', filter$rules[[i]]$value, tz = "GMT", '\")')  # single date-time
         }
         
       } else if (filter$rules[[i]]$type == 'date') {  # treat dates
